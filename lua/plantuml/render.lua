@@ -7,9 +7,9 @@ local function isPumlFile()
 	return bufname:match("%.puml")
 end
 
-M.preview = function()
-	if not isPumlFile() then
-		vim.notify("Only `.puml` file is supportet for now", vim.log.levels.ERROR, {})
+local function renderAndPreview()
+	if not vim.fn.executable("plantuml") then
+		vim.notify("Plantuml is not installed or not in the Path", vim.log.levels.ERROR)
 		return
 	end
 
@@ -32,6 +32,24 @@ M.preview = function()
 	os.execute(cmd)
 
 	os.execute(string.format("%s %s", config.viewer, output_file))
+end
+
+M.preview = function()
+	if not isPumlFile() then
+		vim.notify("Only `.puml` file is supportet for now", vim.log.levels.ERROR, {})
+		return
+	end
+
+	renderAndPreview()
+
+	if config.auto_refresh then
+		vim.api.nvim_create_autocmd("BufWritePost", {
+			buffer = vim.api.nvim_get_current_buf(),
+			callback = function()
+				renderAndPreview()
+			end,
+		})
+	end
 end
 
 return M
