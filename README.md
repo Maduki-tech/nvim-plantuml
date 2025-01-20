@@ -39,7 +39,7 @@ Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
 use {
-    'yourusername/plantuml-nvim',
+    'Maduki-tech/nvim-plantuml',
     config = function()
         require('plantuml').setup({
             output_dir = '/tmp',
