@@ -1,5 +1,11 @@
 local config = require("plantuml.config")
 
+--- @enum PlantumlExportType
+local PlantumlExportType = {
+	png = "png",
+	svg = "svg",
+}
+
 local M = {}
 
 local function isPumlFile()
@@ -49,6 +55,16 @@ M.preview = function()
 				renderAndPreview()
 			end,
 		})
+	end
+end
+
+--- @param type PlantumlExportType
+M.export = function(type)
+	-- TODO: add input request to ask where to save
+	if type == "png" then
+		vim.print("PNG")
+	elseif type == "svg" then
+		vim.print("SVG")
 	end
 end
 
