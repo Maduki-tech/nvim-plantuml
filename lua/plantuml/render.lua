@@ -60,11 +60,24 @@ end
 
 --- @param type PlantumlExportType
 M.export = function(type)
-	-- TODO: add input request to ask where to save
+	if not isPumlFile() then
+		vim.notify("Only `.puml` file is supportet for now", vim.log.levels.ERROR, {})
+		return
+	end
+
+	if not vim.fn.executable("plantuml") then
+		vim.notify("Plantuml is not installed or not in the Path", vim.log.levels.ERROR)
+		return
+	end
+
+	local file = vim.api.nvim_buf_get_name(0)
+	vim.print(file)
 	if type == "png" then
-		vim.print("PNG")
+		local cmd = string.format("plantuml -tpng %s", file)
+		os.execute(cmd)
 	elseif type == "svg" then
-		vim.print("SVG")
+		local cmd = string.format("plantuml -tpng %s", file)
+		os.execute(cmd)
 	end
 end
 
